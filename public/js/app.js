@@ -180,8 +180,10 @@
           _initialize: function _initialize(data) {
             var users = data.users;
             var name = data.name;
+            var key = data.key;
+            console.log(key);
 
-            this.setState({ users: users, user: name });
+            this.setState({ users, user: name, key });
           },
 
           _messageRecieve: function _messageRecieve(message) {
