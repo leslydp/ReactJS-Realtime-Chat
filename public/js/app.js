@@ -114,13 +114,18 @@
             return React.createElement(
               "div",
               { className: "message_form" },
-              React.createElement("h3", null, "Write New Message"),
+              React.createElement("h3", null, "Escribir mensaje"),
               React.createElement(
                 "form",
                 { onSubmit: this.handleSubmit },
                 React.createElement("input", {
                   onChange: this.changeHandler,
                   value: this.state.text,
+                }),
+                React.createElement("input", {
+                  type: "submit",
+                  value: "Enviar",
+                  className: "button"
                 })
               )
             );
@@ -156,6 +161,11 @@
                 React.createElement("input", {
                   onChange: this.onKey,
                   value: this.state.newName,
+                }),
+                React.createElement("input", {
+                  type: "submit",
+                  value: "Guardar",
+                  className: "button"
                 })
               )
             );
