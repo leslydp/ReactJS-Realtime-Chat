@@ -176,12 +176,8 @@ var ChatApp = React.createClass({
       hashKey += this.state.key.charCodeAt(i);
     } // pasando llave en int para descencriptar
     for (var i = 0; i < text.length; ++i) {
-      console.log(text[i]);
-      console.log(hashKey);
-      console.log(String.fromCharCode(text[i] - hashKey));
       a += String.fromCharCode(text[i] - hashKey);
     }
-    console.log(a);
     return a;
   },
 
@@ -211,7 +207,7 @@ var ChatApp = React.createClass({
     users.push(name);
     messages.push({
       user: "APPLICATION BOT",
-      text: "Se ha unido " + name
+      text: name + " Joined"
     });
     this.setState({ users: users, messages: messages });
   },
@@ -226,7 +222,7 @@ var ChatApp = React.createClass({
     users.splice(index, 1);
     messages.push({
       user: "APPLICATION BOT",
-      text: "Se ha ido " name
+      text: name + " Left"
     });
     this.setState({ users: users, messages: messages });
   },
@@ -242,7 +238,7 @@ var ChatApp = React.createClass({
     users.splice(index, 1, newName);
     messages.push({
       user: "APPLICATION BOT",
-      text: oldName + "ha cambiado su nombre a " + newName
+      text: "Change Name : " + oldName + " ==> " + newName
     });
     this.setState({ users: users, messages: messages });
   },
