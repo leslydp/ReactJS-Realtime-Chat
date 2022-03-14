@@ -211,7 +211,7 @@ var ChatApp = React.createClass({
     users.push(name);
     messages.push({
       user: "APPLICATION BOT",
-      text: name + " Joined"
+      text: "Se ha unido " + name
     });
     this.setState({ users: users, messages: messages });
   },
@@ -226,7 +226,7 @@ var ChatApp = React.createClass({
     users.splice(index, 1);
     messages.push({
       user: "APPLICATION BOT",
-      text: name + " Left"
+      text: "Se ha ido " name
     });
     this.setState({ users: users, messages: messages });
   },
@@ -242,7 +242,7 @@ var ChatApp = React.createClass({
     users.splice(index, 1, newName);
     messages.push({
       user: "APPLICATION BOT",
-      text: "Change Name : " + oldName + " ==> " + newName
+      text: oldName + "ha cambiado su nombre a " + newName
     });
     this.setState({ users: users, messages: messages });
   },
