@@ -44,8 +44,7 @@
           render: function render() {
             return React.createElement(
               "div",
-              { className: "users" },
-              React.createElement("h3", null, " Online Users "),
+              { className: "users-list" },
               React.createElement(
                 "ul",
                 null,
@@ -75,9 +74,8 @@
 
           render: function render() {
             return React.createElement(
-              "div",
-              { className: "messages" },
-              React.createElement("h2", null, " Conversation: "),
+              "ul",
+              { className: "message-area" },
               this.props.messages.map(function (message, i) {
                 return React.createElement(Message, {
                   key: i,
@@ -113,7 +111,7 @@
           render: function render() {
             return React.createElement(
               "div",
-              { className: "message_form" },
+              { className: "input-area" },
               React.createElement("h3", null, "Escribir mensaje"),
               React.createElement(
                 "form",
@@ -121,11 +119,12 @@
                 React.createElement("input", {
                   onChange: this.changeHandler,
                   value: this.state.text,
+                  type: "text",
                 }),
                 React.createElement("input", {
                   type: "submit",
                   value: "Enviar",
-                  className: "button"
+                  className: "button",
                 })
               )
             );
@@ -153,19 +152,20 @@
           render: function render() {
             return React.createElement(
               "div",
-              { className: "change_name_form" },
-              React.createElement("h3", null, " Change Name "),
+              { className: "change-name-form" },
+              React.createElement("h3", null, "Cambiar nombre de usuario"),
               React.createElement(
                 "form",
                 { onSubmit: this.handleSubmit },
                 React.createElement("input", {
                   onChange: this.onKey,
                   value: this.state.newName,
+                  type: "text",
                 }),
                 React.createElement("input", {
                   type: "submit",
-                  value: "Guardar",
-                  className: "button"
+                  value: "Cambiar",
+                  className: "button",
                 })
               )
             );
@@ -275,20 +275,30 @@
           render: function render() {
             return React.createElement(
               "div",
-              null,
-              React.createElement(UsersList, {
-                users: this.state.users,
-              }),
-              React.createElement(MessageList, {
-                messages: this.state.messages,
-              }),
-              React.createElement(MessageForm, {
-                onMessageSubmit: this.handleMessageSubmit,
-                user: this.state.user,
-              }),
-              React.createElement(ChangeNameForm, {
-                onChangeName: this.handleChangeName,
-              })
+              { className: "app" },
+              React.createElement(
+                "div",
+                { className: "chat-area" },
+                React.createElement("h1", null, "Conversación"),
+                React.createElement(MessageList, {
+                  messages: this.state.messages,
+                }),
+                React.createElement(MessageForm, {
+                  onMessageSubmit: this.handleMessageSubmit,
+                  user: this.state.user,
+                })
+              ),
+              React.createElement(
+                "div",
+                { className: "users-area" },
+                React.createElement("h1", null, "Lista de usuarios"),
+                React.createElement(UsersList, {
+                  users: this.state.users,
+                }),
+                React.createElement(ChangeNameForm, {
+                  onChangeName: this.handleChangeName,
+                })
+              )
             );
           },
         });
