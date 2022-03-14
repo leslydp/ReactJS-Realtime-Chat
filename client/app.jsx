@@ -94,7 +94,7 @@ var ChangeNameForm = React.createClass({
   render() {
     return (
       <div className="change-name-form">
-        <h4>Usuario: {user}</h4>
+        <h4>Cambiar nombre</h4>
         <form onSubmit={this.handleSubmit}>
           <input onChange={this.onKey} value={this.state.newName} type="text" />
           <input type="submit" value="Cambiar" />
