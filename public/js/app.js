@@ -155,16 +155,49 @@ var ChatApp = React.createClass({
     socket.on("change:name", this._userChangedName);
   },
 
+  encrypt: function encrypt(text) {
+    var a = [];
+    var hashKey = 0;
+    // transformando llave a int;
+    for (var i = 0; i < this.state.key.length; ++i) {
+      hashKey += this.state.key.charCodeAt(i);
+    } // pasando llave en int para encriptar
+    for (var i = 0; i < text.text.length; ++i) {
+      a.push(text.text.charCodeAt(i) + hashKey);
+    }
+    return a;
+  },
+
+  decrypt: function decrypt(text) {
+    var a = "";
+    var hashKey = 0;
+    // transformando llave a int;
+    for (var i = 0; i < this.state.key.length; ++i) {
+      hashKey += this.state.key.charCodeAt(i);
+    } // pasando llave en int para descencriptar
+    for (var i = 0; i < text.length; ++i) {
+      console.log(text[i]);
+      console.log(hashKey);
+      console.log(String.fromCharCode(text[i] - hashKey));
+      a += String.fromCharCode(text[i] - hashKey);
+    }
+    console.log(a);
+    return a;
+  },
+
   _initialize: function _initialize(data) {
     var users = data.users;
     var name = data.name;
+    var key = data.key;
 
-    this.setState({ users: users, user: name });
+    this.setState({ users: users, user: name, key: key });
   },
 
   _messageRecieve: function _messageRecieve(message) {
     var messages = this.state.messages;
 
+    message.text = this.decrypt(message.text);
+    console.log(message);
     messages.push(message);
     this.setState({ messages: messages });
   },
@@ -219,7 +252,7 @@ var ChatApp = React.createClass({
 
     messages.push(message);
     this.setState({ messages: messages });
-    socket.emit("send:message", message);
+    socket.emit("send:message", this.encrypt(message));
   },
 
   handleChangeName: function handleChangeName(newName) {

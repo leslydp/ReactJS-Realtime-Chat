@@ -1,20 +1,12 @@
-
-//Encrypting text
-function encrypt(text) {
-  let cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key), iv);
-  let encrypted = cipher.update(text);
-  encrypted = Buffer.concat([encrypted, cipher.final()]);
-  return { iv: iv.toString("hex"), encryptedData: encrypted.toString("hex") };
+var randomstring = require("randomstring");
+const re = randomstring.generate();
+let public = "";
+let private = "";
+for (let i = 0; i < re.length / 2; ++i) {
+  public += re[i];
 }
-
-// Decrypting text
-function decrypt(text) {
-  let iv = Buffer.from(text.iv, "hex");
-  let encryptedText = Buffer.from(text.encryptedData, "hex");
-  let decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key), iv);
-  let decrypted = decipher.update(encryptedText);
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-  return decrypted.toString();
+for (let i = re.length / 2 + 1; i < re.length; ++i) {
+  private += re[parseInt(i)];
 }
 
 // Keep track of which names are used so that there are no duplicates
@@ -70,23 +62,25 @@ var userNames = (function () {
 // export function for listening to the socket
 module.exports = function (socket) {
   var name = userNames.getGuestName();
-  const data = "key";
   // send the new user their name and a list of users
   socket.emit("init", {
     name: name,
     users: userNames.get(),
+    key: public,
   });
 
   // notify other clients that a new user has joined
+  console.log(`Se ha unido ${name}`);
   socket.broadcast.emit("user:join", {
     name: name,
   });
 
   // broadcast a user's message to other users
   socket.on("send:message", function (data) {
+    console.log(`${name}: ${data}`);
     socket.broadcast.emit("send:message", {
       user: name,
-      text: data.text,
+      text: data,
     });
   });
 
@@ -95,9 +89,9 @@ module.exports = function (socket) {
     if (userNames.claim(data.name)) {
       var oldName = name;
       userNames.free(oldName);
-
       name = data.name;
 
+      console.log(`${oldName} se ha cambiado a ${name}`);
       socket.broadcast.emit("change:name", {
         oldName: oldName,
         newName: name,
@@ -111,6 +105,7 @@ module.exports = function (socket) {
 
   // clean up when a user leaves, and broadcast it to other users
   socket.on("disconnect", function () {
+    console.log(`${name} se ha ido`);
     socket.broadcast.emit("user:left", {
       name: name,
     });
